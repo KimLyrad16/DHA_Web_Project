@@ -11,19 +11,22 @@
 <header class="site-header">
     <div class="container nav-container">
         <div class="logo">
-            <span class="logo-main">DHA</span>
-            <span class="logo-sub">Metal Fabrication Services</span>
+            <a href="#top" class="logo-link">
+                <img src="assets/images/DHA_Logo_Web.png" alt="DHA Metal Fabrication Services Logo">
+            </a>
         </div>
+
         <nav class="main-nav">
             <a href="#services">Services</a>
             <a href="#portfolio">Projects</a>
             <a href="#about">About</a>
             <a href="#contact">Inquire</a>
-            <a href="dashboard.html" class="btn-nav">Client Page</a>
         </nav>
     </div>
+</header>
 
-    <section class="hero container">
+<section class="hero">
+    <div class="container">
         <div class="hero-text">
             <h1>Custom Stainless Kitchen Fabrication</h1>
             <p>
@@ -40,7 +43,8 @@
                 <span>✅ Made in the Philippines</span>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 </header>
 
 <main>
@@ -143,41 +147,47 @@
 
             <div class="contact-form-card">
                 <form id="inquiryForm">
-                    <div class="form-group">
-                        <label for="name">Full Name *</label>
-                        <input type="text" id="name" required>
-                    </div>
+    <div class="form-group">
+        <label for="full_name">Full Name *</label>
+        <input type="text" id="full_name" name="full_name" required>
+    </div>
 
-                    <div class="form-group">
-                        <label for="email">Email *</label>
-                        <input type="email" id="email" required>
-                    </div>
+    <div class="form-group">
+        <label for="email">Email *</label>
+        <input type="email" id="email" name="email" required>
+    </div>
 
-                    <div class="form-group">
-                        <label for="phone">Contact Number *</label>
-                        <input type="tel" id="phone" required>
-                    </div>
+    <div class="form-group">
+        <label for="contact_number">Contact Number *</label>
+        <input type="tel" id="contact_number" name="contact_number" required>
+    </div>
 
-                    <div class="form-group">
-                        <label for="serviceType">Requirement *</label>
-                        <select id="serviceType" required>
-                            <option value="">Select</option>
-                            <option>Full kitchen package</option>
-                            <option>Worktables & sinks</option>
-                            <option>Rangehood & exhaust</option>
-                            <option>Racks & shelving</option>
-                        </select>
-                    </div>
+    <div class="form-group">
+        <label for="requirement">Requirement *</label>
+        <select id="requirement" name="requirement" required>
+            <option value="">Select</option>
+            <option>Full kitchen package</option>
+            <option>Worktables & sinks</option>
+            <option>Rangehood & exhaust</option>
+            <option>Racks & shelving</option>
+        </select>
+    </div>
 
-                    <div class="form-group">
-                        <label for="attachments">Attach file(s) for quotation (optional)</label>
-                        <input type="file" id="attachments" name="files" multiple>
-                    </div>
+    <div class="form-group">
+        <label for="message">Message / Project Details *</label>
+        <textarea id="message" name="message" required></textarea>
+    </div>
+
+    <div class="form-group">
+        <label for="files">Attach file(s) (optional)</label>
+        <input type="file" id="files" name="files" multiple>
+    </div>
+
+    <button type="submit" class="btn-primary full-width">Send Inquiry</button>
+    <p id="formStatus" class="form-status"></p>
+</form>
 
 
-                    <button type="submit" class="btn-primary full-width">Send Inquiry</button>
-                    <p id="formStatus" class="form-status"></p>
-                </form>
             </div>
         </div>
     </section>
@@ -201,6 +211,8 @@
         <p id="imageModalCaption"></p>
     </div>
 </div>
+
+
 
 
 </body>

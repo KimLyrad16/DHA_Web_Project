@@ -44,16 +44,12 @@ const upload = multer({
 // ================== PUBLIC API: CLIENT INQUIRY FORM ==================
 // Frontend sends multipart/form-data: full_name, email, contact_number, requirement, message, files[]
 app.post("/api/inquiries", upload.array("files"), async (req, res) => {
-    const {
-        full_name,
-        email,
-        contact_number,
-        requirement,
-        message
-    } = req.body;
+    const { full_name, email, contact_number, requirement, message } = req.body;
 
     if (!full_name || !email || !contact_number || !requirement || !message) {
-        return res.status(400).json({ success: false, message: "Missing required fields." });
+        return res
+            .status(400)
+            .json({ success: false, message: "Missing required fields." });
     }
 
     const conn = await pool.getConnection();
@@ -69,6 +65,7 @@ app.post("/api/inquiries", upload.array("files"), async (req, res) => {
         );
 
         const inquiryId = result.insertId;
+        console.log("✅ New inquiry saved with ID:", inquiryId);
 
         // 2) Insert attached files (if any) into web_content_inquiry_file
         if (req.files && req.files.length > 0) {
@@ -77,7 +74,7 @@ app.post("/api/inquiries", upload.array("files"), async (req, res) => {
                 const contentType = file.mimetype;
                 const ext = path.extname(originalName).toLowerCase();
                 const fileSize = file.size;
-                const fileData = file.buffer;
+                const fileData = file.buffer; // ok ito dahil memoryStorage ka
 
                 await conn.execute(
                     `INSERT INTO web_content_inquiry_file
@@ -93,16 +90,19 @@ app.post("/api/inquiries", upload.array("files"), async (req, res) => {
         res.json({
             success: true,
             message: "Inquiry saved successfully.",
-            inquiry_id: inquiryId
+            inquiry_id: inquiryId,
         });
     } catch (err) {
         await conn.rollback();
         console.error("Error saving inquiry:", err);
-        res.status(500).json({ success: false, message: "Server error while saving inquiry." });
+        res
+            .status(500)
+            .json({ success: false, message: "Server error while saving inquiry." });
     } finally {
         conn.release();
     }
 });
+
 
 
 // ================== OPTIONAL PUBLIC APIS (Services / Projects) ==================
@@ -351,7 +351,13 @@ app.get("/api/admin/inquiries/file/:fileId", async (req, res) => {
 });
 
 // ---------- START SERVER ----------
+// ---------- START SERVER ----------
 app.listen(3000, "0.0.0.0", () => {
     console.log("Server running on http://0.0.0.0:3000");
 });
+
+
+
+
+
 

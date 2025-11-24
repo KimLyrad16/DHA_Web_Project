@@ -20,10 +20,15 @@
 
 body {
     margin: 0;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
-    background: var(--bg);
-    color: var(--text-main);
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background: linear-gradient(
+        180deg,
+        #1CB5E0 0%,
+        #000046 100%
+    );
+    color: #111827;
 }
+
 
 /* Containers & Sections */
 
@@ -87,9 +92,21 @@ body {
 /* Header & Nav */
 
 .site-header {
-    background: linear-gradient(135deg, #0f172a 0%, #1d2a5b 40%, #1f3a75 100%);
     color: white;
-    padding-bottom: 40px;
+    padding: 10px 0; /* smaller spacing */
+}
+
+.hero {
+    padding: 0px 0 40px; /* remove big top padding */
+    color: #ffffff;
+}
+
+.hero-text {
+    margin-top: -10px; /* slight upward adjust */
+}
+
+.logo-link img {
+    height: 45px; /* remove giant logo pushing content downward */
 }
 
 .small-header {
@@ -115,6 +132,17 @@ body {
     color: #c3d4ff;
 }
 
+.logo-link {
+    display: inline-flex;
+    align-items: center;
+}
+
+.logo-link img {
+    width: auto;
+    display: block;
+}
+
+
 .main-nav a {
     color: #e0e7ff;
     text-decoration: none;
@@ -135,12 +163,41 @@ body {
 /* Hero */
 
 .hero {
-    display: grid;
-    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
-    gap: 32px;
-    align-items: center;
-    padding: 32px 0 16px;
+    padding: 0px 0 40px; /* remove big top padding */
+    color: #ffffff;
 }
+
+
+.hero h1,
+.hero p {
+    text-shadow: 0 2px 6px rgba(0,0,0,0.25);
+}
+
+@media (max-width: 768px) {
+    .hero {
+        padding: 90px 0;
+    }
+}
+
+#services {
+    background: #e8f0fe;
+}
+
+#portfolio {
+    background: #f9fafb;
+}
+
+#about {
+    background: #e8f0fe;
+}
+
+#contact {
+    background: #f9fafb;
+}
+
+
+
+
 
 .hero-text h1 {
     font-size: clamp(2.4rem, 3vw, 3rem);
@@ -665,6 +722,14 @@ body {
         flex: 0 0 230px;
     }
 }
+
+#inquiryForm input,
+#inquiryForm select,
+#inquiryForm textarea {
+    width: 100%;
+    box-sizing: border-box;
+}
+
 
 
 

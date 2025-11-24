@@ -4,50 +4,70 @@ document.addEventListener("DOMContentLoaded", () => {
     const form = document.getElementById("inquiryForm");
     if (form) {
         form.addEventListener("submit", async (e) => {
-            e.preventDefault();
+    e.preventDefault();
 
-            const full_name = document.getElementById("full_name").value;
-            const email = document.getElementById("email").value;
-            const contact_number = document.getElementById("contact_number").value;
-            const requirement = document.getElementById("requirement").value;
-            const message = document.getElementById("message").value;
-            const files = document.getElementById("files").files;
+    // hanapin ang elements sa loob ng form mismo
+    const fullNameInput      = form.querySelector("#full_name");
+    const emailInput         = form.querySelector("#email");
+    const contactNumberInput = form.querySelector("#contact_number");
+    const requirementInput   = form.querySelector("#requirement");
+    const messageInput       = form.querySelector("#message");
+    const filesInput         = form.querySelector("#files");
 
-            if (!full_name || !email || !contact_number || !requirement || !message) {
-                alert("Please fill in all required fields.");
-                return;
-            }
+    // kung may nawawalang field, huwag ituloy para iwas error
+    if (!fullNameInput || !emailInput || !contactNumberInput ||
+        !requirementInput || !messageInput || !filesInput) {
 
-            const formData = new FormData();
-            formData.append("full_name", full_name);
-            formData.append("email", email);
-            formData.append("contact_number", contact_number);
-            formData.append("requirement", requirement);
-            formData.append("message", message);
+        console.error("Inquiry form fields are missing. Please check input IDs.");
+        alert("Form configuration error. Please contact the site administrator.");
+        return;
+    }
 
-            for (let i = 0; i < files.length; i++) {
-                formData.append("files", files[i]);
-            }
+    const full_name      = fullNameInput.value.trim();
+    const email          = emailInput.value.trim();
+    const contact_number = contactNumberInput.value.trim();
+    const requirement    = requirementInput.value.trim();
+    const message        = messageInput.value.trim();
+    const files          = filesInput.files;
 
-            try {
-                const response = await fetch("/api/inquiries", {
-                    method: "POST",
-                    body: formData
-                });
+    if (!full_name || !email || !contact_number || !requirement || !message) {
+        alert("Please fill in all required fields.");
+        return;
+    }
 
-                const result = await response.json();
+    const formData = new FormData();
+    formData.append("full_name", full_name);
+    formData.append("email", email);
+    formData.append("contact_number", contact_number);
+    formData.append("requirement", requirement);
+    formData.append("message", message);
 
-                if (result.success) {
-                    alert("Inquiry sent successfully! We will contact you soon.");
-                    form.reset();
-                } else {
-                    alert(result.message || "Submission failed.");
-                }
-            } catch (err) {
-                console.error("Request failed:", err);
-                alert("Server error while submitting inquiry.");
-            }
+    for (let i = 0; i < files.length; i++) {
+        formData.append("files", files[i]);
+    }
+
+    try {
+        const response = await fetch("/api/inquiries", {
+            method: "POST",
+            body: formData
         });
+
+        const result = await response.json();
+
+        if (result.success) {
+    // Redirect to Thank You page
+            window.location.href = "/dashboard.html";
+        } else {
+            alert(result.message || "Submission failed.");
+        }
+
+
+    } catch (err) {
+        console.error("Request failed:", err);
+        alert("Server error while submitting inquiry.");
+    }
+});
+
     }
 
     // ====== DYNAMIC SERVICES FROM DB ======
