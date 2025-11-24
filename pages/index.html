@@ -40,85 +40,62 @@
                 <span>✅ Made in the Philippines</span>
             </div>
         </div>
-        <div class="hero-image">
-            <div class="hero-image-inner">
-                <img src="assets/images/hero-kitchen.jpg" alt="Commercial stainless kitchen setup">
-            </div>
-        </div>
     </section>
 </header>
 
 <main>
     <!-- SERVICES -->
     <section id="services" class="section">
-        <div class="container">
-            <h2 class="section-title">Our Services</h2>
-            <p class="section-subtitle">
-                We specialize in custom stainless solutions for commercial kitchens.
-            </p>
+    <div class="container">
+        <h2 class="section-title">Our Services</h2>
+        <p class="section-subtitle">
+            We specialize in custom stainless solutions for commercial kitchens.
+        </p>
 
-            <div class="card-grid">
-                <article class="card">
-                    <img src="assets/images/service-counter.jpg" alt="Stainless worktables & counters">
-                    <h3>Worktables & Counters</h3>
-                    <p>
-                        Custom-sized stainless worktables, sinks, and counters with splash guards,
-                        undershelves, and drawers based on your layout.
-                    </p>
-                </article>
+        <div class="slider-wrapper">
+            <!-- LEFT ARROW -->
+            <button class="slider-arrow slider-arrow-left" data-target="servicesGrid">&#8249;</button>
 
-                <article class="card">
-                    <img src="assets/images/service-hood.jpg" alt="Stainless rangehood & exhaust">
-                    <h3>Rangehoods & Exhaust</h3>
-                    <p>
-                        Fabrication of exhaust hoods, ducting, and filters designed for
-                        commercial cooking standards and easier cleaning.
-                    </p>
-                </article>
-
-                <article class="card">
-                    <img src="assets/images/service-shelves.jpg" alt="Stainless racks & shelving">
-                    <h3>Racks & Shelving</h3>
-                    <p>
-                        Wall shelves, storage racks, dish racks, and custom storage solutions
-                        to maximize your kitchen space.
-                    </p>
-                </article>
+            <!-- SLIDER CONTENT -->
+            <div id="servicesGrid" class="slider-container">
+                <p class="loading-text">Loading services...</p>
             </div>
+
+            <!-- RIGHT ARROW -->
+            <button class="slider-arrow slider-arrow-right" data-target="servicesGrid">&#8250;</button>
         </div>
-    </section>
+    </div>
+</section>
+
 
     <!-- PORTFOLIO -->
-    <section id="portfolio" class="section section-alt">
-        <div class="container">
-            <h2 class="section-title">Sample Projects</h2>
-            <p class="section-subtitle">
-                Some of the stainless kitchen works we’ve completed for our clients.
-            </p>
+    <section id="portfolio" class="section">
+    <div class="container">
+        <h2 class="section-title">Sample Projects</h2>
+        <p class="section-subtitle">
+            Some of the stainless kitchen works we’ve completed for our clients.
+        </p>
 
-            <div class="gallery-grid">
-                <figure class="gallery-item">
-                    <img src="assets/images/gallery-1.jpg" alt="Stainless prep table">
-                    <figcaption>Stainless prep table with undershelves</figcaption>
-                </figure>
-                <figure class="gallery-item">
-                    <img src="assets/images/gallery-2.jpg" alt="Restaurant kitchen line">
-                    <figcaption>Full restaurant kitchen line</figcaption>
-                </figure>
-                <figure class="gallery-item">
-                    <img src="assets/images/gallery-3.jpg" alt="Rangehood & exhaust">
-                    <figcaption>Custom rangehood & exhaust system</figcaption>
-                </figure>
-                <figure class="gallery-item">
-                    <img src="assets/images/gallery-4.jpg" alt="Storage racks">
-                    <figcaption>Stainless storage racks</figcaption>
-                </figure>
+        <div class="slider-wrapper">
+            <!-- LEFT ARROW -->
+            <button class="slider-arrow slider-arrow-left" data-target="projectsGrid">&#8249;</button>
+
+            <!-- SLIDER CONTENT -->
+            <div id="projectsGrid" class="slider-container">
+                <p class="loading-text">Loading sample projects...</p>
             </div>
+
+            <!-- RIGHT ARROW -->
+            <button class="slider-arrow slider-arrow-right" data-target="projectsGrid">&#8250;</button>
         </div>
-    </section>
+    </div>
+</section>
+
+
 
     <!-- ABOUT -->
-    <section id="about" class="section">
+    <section id="about" class="section section-alt">
+
         <div class="container about-layout">
             <div>
                 <h2 class="section-title">About Our Company</h2>
@@ -193,9 +170,10 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="message">Message *</label>
-                        <textarea id="message" rows="4" required></textarea>
+                        <label for="attachments">Attach file(s) for quotation (optional)</label>
+                        <input type="file" id="attachments" name="files" multiple>
                     </div>
+
 
                     <button type="submit" class="btn-primary full-width">Send Inquiry</button>
                     <p id="formStatus" class="form-status"></p>
@@ -213,6 +191,17 @@
 
 <!-- ✔ UPDATED JS PATH -->
 <script src="assets/js/main.js"></script>
+
+<!-- Image Zoom Modal -->
+<div id="imageModal" class="image-modal">
+    <div class="image-modal-backdrop"></div>
+    <div class="image-modal-content">
+        <button class="image-modal-close">&times;</button>
+        <img id="imageModalImg" src="" alt="">
+        <p id="imageModalCaption"></p>
+    </div>
+</div>
+
 
 </body>
 </html>

@@ -34,11 +34,43 @@ body {
 
 .section {
     padding: 64px 0;
+    /* no background here */
+    background: transparent;
 }
 
-.section-alt {
-    background: #f6f7fb;
+/* Alternating section backgrounds */
+#services {
+    background: #e8f0fe;   /* light blue */
 }
+
+#portfolio {
+    background: #f9fafb;   /* almost white */
+}
+
+#about {
+    background: #e8f0fe;   /* light blue ulit */
+}
+
+#contact {
+    background: #f9fafb;   /* almost white ulit */
+}
+
+/* Optional: subtle divider between blocks */
+#services,
+#portfolio,
+#about,
+#contact {
+    border-top: 1px solid #dde3f0;
+}
+
+
+
+.section-alt {
+    padding: 64px 0;
+    background: #f9fafb;   /* almost white */
+}
+
+
 
 .section-title {
     font-size: 2rem;
@@ -245,6 +277,44 @@ body {
     gap: 16px;
 }
 
+/* Horizontal slider container */
+.slider-container {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    gap: 16px;
+    padding: 10px;
+    scrollbar-width: none;
+}
+.slider-container::-webkit-scrollbar {
+    display: none;
+}
+
+/* Services cards */
+.card {
+    flex: 0 0 300px;
+    background: #fff;
+    border-radius: 12px;
+    padding: 15px;
+    scroll-snap-align: start;
+}
+
+/* Projects gallery */
+.gallery-item {
+    flex: 0 0 300px;
+    scroll-snap-align: start;
+}
+
+/* Images inside slider */
+.slider-container img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+
 .gallery-item {
     background: var(--white);
     border-radius: var(--radius-md);
@@ -414,8 +484,8 @@ body {
     font-size: 0.9rem;
 }
 
-/* Responsive */
 
+/* Responsive layout – general */
 @media (max-width: 900px) {
     .hero {
         grid-template-columns: minmax(0, 1fr);
@@ -442,3 +512,159 @@ body {
         gap: 10px;
     }
 }
+
+/* === SLIDER LAYOUT === */
+.slider-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 16px;
+}
+
+/* Slider strip */
+.slider-container {
+    flex: 1 1 auto;
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    gap: 16px;
+    padding: 10px 4px 20px;
+    scrollbar-width: none; /* Firefox */
+}
+
+.slider-container::-webkit-scrollbar {
+    display: none; /* Chrome, Safari */
+}
+
+.slider-container > * {
+    flex: 0 0 260px;
+    scroll-snap-align: start;
+}
+
+/* Images inside slider */
+.slider-container img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 12px;
+}
+
+/* Cards / gallery inside slider */
+.slider-container .card,
+.slider-container .gallery-item {
+    min-width: 260px;
+}
+
+/* Modern circular arrows – inline */
+.slider-arrow {
+    flex: 0 0 auto;
+    position: static;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 4px 16px rgba(15, 23, 42, 0.25);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    font-weight: bold;
+    color: #111827;
+    transition: transform 0.15s ease, background 0.15s ease,
+                color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.slider-arrow:hover {
+    transform: scale(1.08);
+    background: #1565d8;
+    color: #ffffff;
+    box-shadow: 0 6px 22px rgba(21, 101, 216, 0.45);
+}
+
+.slider-arrow:active {
+    transform: scale(0.96);
+}
+
+/* Zoomable images (for modal) */
+.zoomable {
+    cursor: zoom-in;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.zoomable:hover {
+    transform: scale(1.02);
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.25);
+}
+
+/* === IMAGE MODAL === */
+.image-modal {
+    position: fixed;
+    inset: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.image-modal.open {
+    display: flex;
+}
+
+.image-modal-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.65);
+}
+
+.image-modal-content {
+    position: relative;
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 12px 12px 16px;
+    max-width: 90vw;
+    max-height: 90vh;
+    box-shadow: 0 20px 60px rgba(15, 23, 42, 0.6);
+    z-index: 1001;
+}
+
+.image-modal-content img {
+    max-width: 80vw;
+    max-height: 70vh;
+    object-fit: contain;
+    display: block;
+    border-radius: 12px;
+}
+
+.image-modal-content p {
+    margin-top: 8px;
+    font-size: 0.9rem;
+    color: #4b5563;
+    text-align: center;
+}
+
+.image-modal-close {
+    position: absolute;
+    top: 4px;
+    right: 8px;
+    border: none;
+    background: transparent;
+    font-size: 24px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+/* Small screens – slider tweaks */
+@media (max-width: 640px) {
+    .slider-wrapper {
+        gap: 6px;
+    }
+    .slider-container > * {
+        flex: 0 0 230px;
+    }
+}
+
+
+
