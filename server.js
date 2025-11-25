@@ -14,7 +14,7 @@ const localConfig = {
   host: "127.0.0.1",
   port: 3306,
   user: "root",
-  password: "0516name91daryL",
+  password: "QwDKDOlwdwiNYAvgmDyYYvOavTqDAwMK",
   database: "dha_fabrication_db"
 };
 
