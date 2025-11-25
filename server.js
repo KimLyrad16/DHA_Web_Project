@@ -17,7 +17,7 @@ const dbConfig = {
   port: 45854,
   user: "root",
   password: "wnSvrMCcpxemJVMmowwqZLUeYagaYkPZ",
-  database: "railway",
+  database: "dha_fabrication_db",
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0,
