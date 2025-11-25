@@ -6,7 +6,7 @@ const path = require("path");
 
 const app = express();
 
-// MySQL Pool (works local + Railway)
+// MySQL Pool (Local + Railway)
 const pool = mysql.createPool({
   host: process.env.MYSQLHOST || "127.0.0.1",
   port: process.env.MYSQLPORT || 3306,
@@ -15,30 +15,30 @@ const pool = mysql.createPool({
   database: process.env.MYSQLDATABASE || "dha_fabrication_db",
   waitForConnections: true,
   connectionLimit: 10,
-  queueLimit: 0
+  queueLimit: 0,
+  ssl: process.env.MYSQLHOST ? { rejectUnauthorized: false } : undefined
 });
 
 app.use(cors());
 app.use(express.json());
 
-// Serve static frontend (pages folder)
-const staticPath = path.join(__dirname, "pages");
-app.use(express.static(staticPath));
+// Serve static frontend
+app.use(express.static(path.join(__dirname, "pages")));
 
-// Default landing page
+// Default route
 app.get("/", (req, res) => {
-  res.sendFile(path.join(staticPath, "index.html"));
+  res.sendFile(path.join(__dirname, "pages", "index.html"));
 });
 
-// Multer → Files stored in memory
+// Multer: store files in memory buffer
 const upload = multer({
   storage: multer.memoryStorage(),
   limits: { fileSize: 20 * 1024 * 1024 }
 });
 
-// =================================
-// Client Inquiry Submit Form
-// =================================
+// =========================================================
+// 📌 CLIENT — Submit Inquiry
+// =========================================================
 app.post("/api/inquiries", upload.array("files"), async (req, res) => {
   const { full_name, email, contact_number, requirement, message } = req.body;
 
@@ -78,16 +78,20 @@ app.post("/api/inquiries", upload.array("files"), async (req, res) => {
 
     await conn.commit();
     res.json({ success: true, inquiry_id: inquiryId });
+
   } catch (err) {
     await conn.rollback();
     console.error("Error saving inquiry:", err);
     res.status(500).json({ success: false });
+
   } finally {
     conn.release();
   }
 });
 
-// Admin API — list inquiries
+// =========================================================
+// 🛠 ADMIN — List Inquiries
+// =========================================================
 app.get("/api/admin/inquiries", async (req, res) => {
   try {
     const [rows] = await pool.execute(
@@ -103,7 +107,7 @@ app.get("/api/admin/inquiries", async (req, res) => {
   }
 });
 
-// Admin — download file
+// Admin — download a file
 app.get("/api/admin/inquiries/file/:fileId", async (req, res) => {
   const { fileId } = req.params;
   try {
@@ -113,19 +117,97 @@ app.get("/api/admin/inquiries/file/:fileId", async (req, res) => {
        WHERE FileID = ?`,
       [fileId]
     );
+
     if (!rows.length) return res.sendStatus(404);
 
     const file = rows[0];
     res.setHeader("Content-Type", file.ContentType);
     res.setHeader("Content-Disposition", `attachment; filename="${file.OriginalName}"`);
     res.send(file.FileData);
+
   } catch (err) {
     console.error(err);
     res.sendStatus(500);
   }
 });
 
+// =========================================================
+// ✨ SERVICES — Read & Image Fetch
+// =========================================================
+app.get("/api/services", async (req, res) => {
+  try {
+    const [rows] = await pool.execute(`
+      SELECT service_id, title, description, image_alt
+      FROM web_content_services
+      WHERE is_active = 1
+      ORDER BY sort_order
+    `);
+    res.json(rows);
+  } catch (err) {
+    console.error(err);
+    res.sendStatus(500);
+  }
+});
+
+app.get("/api/services/:id/image", async (req, res) => {
+  try {
+    const [rows] = await pool.execute(
+      `SELECT image, image_type
+       FROM web_content_services
+       WHERE service_id = ?`,
+      [req.params.id]
+    );
+    if (!rows.length) return res.sendStatus(404);
+
+    res.setHeader("Content-Type", rows[0].image_type || "image/jpeg");
+    res.send(rows[0].image);
+
+  } catch (err) {
+    console.error(err);
+    res.sendStatus(500);
+  }
+});
+
+// =========================================================
+// 🏗 PROJECTS — Read & Image Fetch
+// =========================================================
+app.get("/api/projects", async (req, res) => {
+  try {
+    const [rows] = await pool.execute(`
+      SELECT project_id, title, description, image_alt
+      FROM web_content_projects
+      WHERE is_active = 1
+      ORDER BY sort_order
+    `);
+    res.json(rows);
+  } catch (err) {
+    console.error(err);
+    res.sendStatus(500);
+  }
+});
+
+app.get("/api/projects/:id/image", async (req, res) => {
+  try {
+    const [rows] = await pool.execute(
+      `SELECT image, image_type
+       FROM web_content_projects
+       WHERE project_id = ?`,
+      [req.params.id]
+    );
+    if (!rows.length) return res.sendStatus(404);
+
+    res.setHeader("Content-Type", rows[0].image_type || "image/jpeg");
+    res.send(rows[0].image);
+
+  } catch (err) {
+    console.error(err);
+    res.sendStatus(500);
+  }
+});
+
+// =========================================================
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, "0.0.0.0", () => {
-  console.log(`Server listening on port ${PORT}`);
+  console.log(`✔ Server running on port ${PORT}`);
 });
