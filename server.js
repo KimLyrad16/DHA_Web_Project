@@ -7,16 +7,32 @@ const path = require("path");
 
 const app = express();
 
-const pool = mysql.createPool({
-    host: "maglev.proxy.rlwy.net",   // same as sa Workbench import
-    port: 37538,                     // same port you used there
-    user: "root",
-    password: "QwDKDOlwdwiNYAvgmDyYYvOavTqDAwMK",
-    database: "dha_fabrication_db",  // ito na yung in-import mong schema
-    waitForConnections: true,
-    connectionLimit: 10,
-    queueLimit: 0
-});
+import mysql from "mysql2";
+
+// Default values for local development (can be removed if not needed)
+const localConfig = {
+  host: "127.0.0.1",
+  port: "3306",
+  user: "root",
+  password: "0516name91daryL",
+  database: "dha_fabrication_db"
+};
+
+const config = {
+  host: process.env.MYSQLHOST || localConfig.host,
+  port: process.env.MYSQLPORT || localConfig.port,
+  user: process.env.MYSQLUSER || localConfig.user,
+  password: process.env.MYSQLPASSWORD || localConfig.password,
+  database: process.env.MYSQLDATABASE || localConfig.database,
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0
+};
+
+const pool = mysql.createPool(config);
+
+export default pool.promise();
+
 
 
 
