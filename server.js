@@ -7,17 +7,18 @@ const path = require("path");
 
 const app = express();
 
-// MySQL
 const pool = mysql.createPool({
-    host: "localhost",
-    port: 3306,
-    user: "appuser",
-    password: "0516name91daryL",
-    database: "dha_fabrication_db",
+    host: "maglev.proxy.rlwy.net",   // same as sa Workbench import
+    port: 37538,                     // same port you used there
+    user: "root",
+    password: "QwDKDOlwdwiNYAvgmDyYYvOavTqDAwMK",
+    database: "dha_fabrication_db",  // ito na yung in-import mong schema
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0
 });
+
+
 
 app.use(cors());
 app.use(express.json());
