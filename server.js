@@ -134,18 +134,22 @@ app.get("/api/admin/inquiries/file/:fileId", async (req, res) => {
 // =========================================================
 // ✨ SERVICES — Read & Image Fetch
 // =========================================================
+// ====== SERVICES ======
 app.get("/api/services", async (req, res) => {
   try {
     const [rows] = await pool.execute(`
-      SELECT service_id, title, description, image_alt
+      SELECT service_id, title, description, image, image_type, image_alt, sort_order, is_active
       FROM web_content_services
       WHERE is_active = 1
       ORDER BY sort_order
     `);
     res.json(rows);
   } catch (err) {
-    console.error(err);
-    res.sendStatus(500);
+    console.error("Error in /api/services:", err);
+    res.status(500).json({
+      message: "DB error in /api/services",
+      error: err.code || err.message
+    });
   }
 });
 
@@ -161,28 +165,35 @@ app.get("/api/services/:id/image", async (req, res) => {
 
     res.setHeader("Content-Type", rows[0].image_type || "image/jpeg");
     res.send(rows[0].image);
-
   } catch (err) {
-    console.error(err);
-    res.sendStatus(500);
+    console.error("Error in /api/services/:id/image:", err);
+    res.status(500).json({
+      message: "DB error in /api/services/:id/image",
+      error: err.code || err.message
+    });
   }
 });
+
 
 // =========================================================
 // 🏗 PROJECTS — Read & Image Fetch
 // =========================================================
+// ====== PROJECTS ======
 app.get("/api/projects", async (req, res) => {
   try {
     const [rows] = await pool.execute(`
-      SELECT project_id, title, description, image_alt
+      SELECT project_id, title, description, image, image_type, image_alt, sort_order, is_active
       FROM web_content_projects
       WHERE is_active = 1
       ORDER BY sort_order
     `);
     res.json(rows);
   } catch (err) {
-    console.error(err);
-    res.sendStatus(500);
+    console.error("Error in /api/projects:", err);
+    res.status(500).json({
+      message: "DB error in /api/projects",
+      error: err.code || err.message
+    });
   }
 });
 
@@ -193,17 +204,20 @@ app.get("/api/projects/:id/image", async (req, res) => {
        FROM web_content_projects
        WHERE project_id = ?`,
       [req.params.id]
-    );
+      );
     if (!rows.length) return res.sendStatus(404);
 
     res.setHeader("Content-Type", rows[0].image_type || "image/jpeg");
     res.send(rows[0].image);
-
   } catch (err) {
-    console.error(err);
-    res.sendStatus(500);
+    console.error("Error in /api/projects/:id/image:", err);
+    res.status(500).json({
+      message: "DB error in /api/projects/:id/image",
+      error: err.code || err.message
+    });
   }
 });
+
 
 // =========================================================
 
