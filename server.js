@@ -7,17 +7,18 @@ const path = require("path");
 
 const app = express();
 
-import mysql from "mysql2";
+const mysql = require("mysql2/promise");
 
-// Default values for local development (can be removed if not needed)
+// Default values for local development
 const localConfig = {
   host: "127.0.0.1",
-  port: "3306",
+  port: 3306,
   user: "root",
   password: "0516name91daryL",
   database: "dha_fabrication_db"
 };
 
+// Railway → ENV Variables override local config
 const config = {
   host: process.env.MYSQLHOST || localConfig.host,
   port: process.env.MYSQLPORT || localConfig.port,
@@ -29,9 +30,10 @@ const config = {
   queueLimit: 0
 };
 
+// Create database pool
 const pool = mysql.createPool(config);
+module.exports = pool;
 
-export default pool.promise();
 
 
 
