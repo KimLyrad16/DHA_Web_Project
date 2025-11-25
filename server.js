@@ -43,7 +43,7 @@ function buildDbConfig() {
 
   // Fallback to local dev defaults kung wala pa ring host
   if (!cfg.host) {
-    cfg.host = "127.0.0.1";
+    cfg.host = "mysql.railway.internal";
     cfg.port = cfg.port || 3306;
     cfg.user = cfg.user || "root";
     cfg.password = cfg.password || "wnSvrMCcpxemJVMmowwqZLUeYagaYkPZ";
