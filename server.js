@@ -11,7 +11,7 @@ const pool = mysql.createPool({
   host: process.env.MYSQLHOST || "127.0.0.1",
   port: process.env.MYSQLPORT || 3306,
   user: process.env.MYSQLUSER || "root",
-  password: process.env.MYSQLPASSWORD || "QwDKDOlwdwiNYAvgmDyYYvOavTqDAwMK",
+  password: process.env.MYSQLPASSWORD || "wnSvrMCcpxemJVMmowwqZLUeYagaYkPZ",
   database: process.env.MYSQLDATABASE || "dha_fabrication_db",
   waitForConnections: true,
   connectionLimit: 10,
