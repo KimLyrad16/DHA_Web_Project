@@ -7,58 +7,23 @@ const path = require("path");
 const app = express();
 
 /* =========================================================
-   🔧 MySQL Pool (Local + Railway)
-   - Gagamit muna ng explicit env vars:
-     MYSQLHOST, MYSQLPORT, MYSQLUSER, MYSQLPASSWORD, MYSQLDATABASE
-   - Kung wala, susubukan niyang i-parse ang MYSQL_URL (Railway style)
-   - Kung wala pa rin, babagsak sa local defaults (127.0.0.1)
+   🔧 MySQL Pool - always connect to Railway DB
+   From your MYSQL_PUBLIC_URL:
+   mysql://root:PASSWORD@switchyard.proxy.rlwy.net:45854/railway
 ========================================================= */
 
-function buildDbConfig() {
-  const cfg = {
-    host: process.env.MYSQLHOST || "",
-    port: process.env.MYSQLPORT || "",
-    user: process.env.MYSQLUSER || "",
-    password: process.env.MYSQLPASSWORD || "",
-    database: process.env.MYSQLDATABASE || "",
-    waitForConnections: true,
-    connectionLimit: 10,
-    queueLimit: 0,
-  };
+const dbConfig = {
+  host: "switchyard.proxy.rlwy.net",
+  port: 45854,
+  user: "root",
+  password: "wnSvrMCcpxemJVMmowwqZLUeYagaYkPZ",
+  database: "railway",
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0,
+  ssl: { rejectUnauthorized: false },
+};
 
-  // Kung walang host pero may MYSQL_URL (ex: mysql://user:pass@host:port/db)
-  if (!cfg.host && process.env.MYSQL_URL) {
-    try {
-      const url = new URL(process.env.MYSQL_URL);
-      cfg.host = url.hostname;
-      cfg.port = url.port || "3306";
-      cfg.user = decodeURIComponent(url.username || "");
-      cfg.password = decodeURIComponent(url.password || "");
-      cfg.database = (url.pathname || "").replace("/", "") || cfg.database;
-      cfg.ssl = { rejectUnauthorized: false };
-    } catch (err) {
-      console.error("❌ Failed to parse MYSQL_URL:", err.message);
-    }
-  }
-
-  // Fallback to local dev defaults kung wala pa ring host
-  if (!cfg.host) {
-    cfg.host = "mysql.railway.internal";
-    cfg.port = cfg.port || 3306;
-    cfg.user = cfg.user || "root";
-    cfg.password = cfg.password || "wnSvrMCcpxemJVMmowwqZLUeYagaYkPZ";
-    cfg.database = cfg.database || "dha_fabrication_db";
-  }
-
-  // Kung host != localhost, enable SSL (karaniwan sa Railway)
-  if (cfg.host !== "127.0.0.1" && cfg.host !== "localhost") {
-    cfg.ssl = cfg.ssl || { rejectUnauthorized: false };
-  }
-
-  return cfg;
-}
-
-const dbConfig = buildDbConfig();
 console.log("🔌 DB CONFIG =>", {
   host: dbConfig.host,
   port: dbConfig.port,
